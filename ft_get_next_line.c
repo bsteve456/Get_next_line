@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/23 14:24:42 by stbaleba         ###   ########.fr       */
+/*   Updated: 2019/10/23 14:36:32 by stbaleba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int get_next_line(int fd, char **line)
 		if (ft_newline(buf) == 1 ||
 		(read_file == 0 && newline_read < ft_count_newline(cumul)))
 		{
-			printf("line :%d\n", *line);
 			if(!(*line = ft_line_read(newline_read, cumul)))
 				return (-1);
 			newline_read++;
