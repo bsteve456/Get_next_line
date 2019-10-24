@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/24 11:40:38 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/24 11:53:30 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ char	*ft_strmcat(char *line, const char *buf, int read_file)
 	j = 0;
 	if(!(dest = ft_calloc(sizeof(char), (ft_strlen(line) + read_file + 1))))
 		return (NULL);
-	while (line[i])
+	while (i < ft_strlen(line))
 	{
 			dest[i] = line[i];
 			i++;
 	}
-	free(line);
+	if(line)
+		free(line);
 	while(j < read_file)
 	{
 		dest[i + j] = buf[j];
@@ -72,8 +73,6 @@ int get_next_line(int fd, char **line)
 	read_file = 1;
 	if(line && *line)
 		free(*line);
-	if(!cumul)
-		cumul = ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if(!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))) ||
 	!line || fd == -1)
 		return (-1);
