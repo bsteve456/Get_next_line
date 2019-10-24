@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/24 17:55:41 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/24 18:49:32 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,29 +83,24 @@ int get_next_line(int fd, char **line)
 	int read_file;
 	char *buf;
 
-	read_file = 1;
 	if(line && *line)
 		free(*line);
 	if(!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))) ||
 	!line || fd == -1)
 		return (-1);
-	while(read_file > 0)
+	while(((read_file = read(fd, buf, BUFFER_SIZE)) != 0) || (read_file == 0 && ft_newline(cumul) == 1))
 	{
-		read_file = read(fd, buf, BUFFER_SIZE);
 		if (read_file != 0)
 			cumul = ft_strmcat(cumul, buf, read_file);
-		if (ft_newline(cumul) == 1 || (read_file == 0 &&
-				ft_newline(cumul) == 1 ))
+		if (ft_newline(cumul) == 1 && (*line = ft_line_read(cumul)))
 		{
 			free(buf);
-			*line = ft_line_read(cumul);
 			cumul = ft_substr(cumul, ft_length_btn_nl(cumul), ft_strlen(cumul));
 			return (1);
 		}
 	}
 	free(buf);
 	free(cumul);
-	cumul = NULL;
 	*line = NULL;
 	return (0);
 }
