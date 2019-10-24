@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/24 12:05:24 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/24 12:10:46 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,8 @@ int get_next_line(int fd, char **line)
 		read_file = read(fd, buf, BUFFER_SIZE);
 		cumul = ft_strmcat(cumul, buf, read_file);
 		free(buf);
-		if (*cumul)
+		if (*cumul && (*line = ft_line_read(cumul)))
 		{
-			*line = ft_line_read(cumul);
 			cumul = ft_substr(cumul, ft_length_btn_nl(cumul), ft_strlen(cumul));
 			return (1);
 		}
