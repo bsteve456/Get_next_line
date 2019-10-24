@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/24 12:20:32 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/24 17:11:38 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int get_next_line(int fd, char **line)
 		}
 	}
 	free(cumul);
+	cumul = NULL;
 	*line = NULL;
 	return (0);
 }
