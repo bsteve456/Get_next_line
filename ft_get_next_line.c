@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/24 23:28:47 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/25 02:24:53 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,19 @@ char	*ft_strmcat(char *line, const char *buf, int read_file)
 	return (dest);
 }
 
+int ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
+{
+	if (read_file != 0)
+		*cumul = ft_strmcat(*cumul, *buf, read_file);
+	if (ft_newline(*cumul) == 1 || (read_file == 0 && (*cumul && **cumul)))
+	{
+		free(*buf);
+		*line = ft_line_read(*cumul);
+		*cumul = ft_substr(*cumul, ft_length_btn_nl(*cumul), ft_strlen(*cumul));
+		return (1);
+	}
+	return (0);
+}
 int get_next_line(int fd, char **line)
 {
 	static char *cumul = NULL;
@@ -85,23 +98,19 @@ int get_next_line(int fd, char **line)
 
 	if(line && *line)
 		free(*line);
+	read_file = 1;
 	if(!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))) ||
 	!line || fd == -1)
 		return (-1);
-	while(((read_file = read(fd, buf, BUFFER_SIZE)) != 0) || (read_file == 0 && *cumul))
+	while((read_file != 0) || (read_file == 0 && (cumul && *cumul)))
 	{
-		if (read_file != 0)
-			cumul = ft_strmcat(cumul, buf, read_file);
-		if (ft_newline(cumul) == 1 || (read_file == 0 && *cumul))
-		{
-			free(buf);
-			*line = ft_line_read(cumul);
-			cumul = ft_substr(cumul, ft_length_btn_nl(cumul), ft_strlen(cumul));
+		read_file = read(fd, buf, BUFFER_SIZE);
+		if (ft_check_gnl(&buf, &cumul, read_file, line) == 1)
 			return (1);
-		}
 	}
 	free(buf);
 	free(cumul);
+	cumul = NULL;
 	*line = NULL;
 	return (0);
 }
