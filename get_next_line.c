@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/25 12:57:40 by stbaleba         ###   ########.fr       */
+/*   Updated: 2019/10/25 13:40:45 by stbaleba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_line_read(char *cumul)
 char	*ft_strmcat(char *line, const char *buf, int read_file)
 {
 	char	*dest;
-	int		i;
+	size_t	i;
 	int		j;
 
 	i = 0;
