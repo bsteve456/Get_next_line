@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 21:49:04 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/25 13:04:34 by stbaleba         ###   ########.fr       */
+/*   Updated: 2019/10/26 15:15:23 by stbaleba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		}
 		i++;
 	}
-	free((void *)s);
+	if(s)
+		free((void *)s);
 	dst[j] = '\0';
 	return (dst);
 }
