@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/25 13:40:45 by stbaleba         ###   ########.fr       */
+/*   Updated: 2019/10/26 11:49:08 by stbaleba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int		get_next_line(int fd, char **line)
 	if (line && *line)
 		free(*line);
 	read_file = 1;
-	if (!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))) ||
-	!line || fd == -1)
+	if (fd == -1 || !line ||
+	!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))))
 		return (-1);
 	while ((read_file != 0) || (read_file == 0 && (cumul && *cumul)))
 	{
