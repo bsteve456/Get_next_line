@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:29:52 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/28 00:59:05 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/28 13:09:13 by stbaleba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,5 @@ void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
 char	*ft_substr(char *s, unsigned int start, size_t len);
 void	ft_bzero(void *s, size_t n);
-//char	*ft_strjoin(char *s1, char *s2, int read_file);
+
 #endif
