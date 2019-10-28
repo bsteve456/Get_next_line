@@ -6,7 +6,7 @@
 /*   By: stbaleba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:52:44 by stbaleba          #+#    #+#             */
-/*   Updated: 2019/10/28 12:56:03 by stbaleba         ###   ########.fr       */
+/*   Updated: 2019/10/28 14:24:30 by stbaleba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
 		if (buf && *buf)
 			free(*buf);
 		buf = NULL;
+		if (*line)
+			free(*line);
 		*line = ft_substr(*cumul, 0, ft_strlen(*cumul));
 		*cumul = ft_substr(*cumul, ft_strlen(*line) + 1, ft_strlen(*cumul));
 		if (x == 1)
@@ -72,6 +74,8 @@ int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
 		else
 			return (0);
 	}
+	if (*line)
+		free(*line);
 	*line = ft_calloc(1, sizeof(char));
 	return (0);
 }
