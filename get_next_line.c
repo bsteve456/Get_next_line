@@ -75,6 +75,8 @@ int get_next_line(int fd, char **line)
 	read_file = 1;
 	while(read_file > 0 || (read_file == 0 && (cumul && *cumul)))
 	{
+		if (ft_check_gnl(&buf, &cumul, read_file, line) == 1)
+			return (1);
 		read_file = read(fd, buf, BUFFER_SIZE);
 		if (read_file == -1)
 		{
@@ -84,9 +86,6 @@ int get_next_line(int fd, char **line)
 		}
 		if(read_file != 0)
 			cumul = ft_strjoin(cumul, buf, read_file);
-		if (ft_check_gnl(&buf, &cumul, read_file, line) == 1){
-			return (1);
-		}
 	}
 //	if(buf)
 //		free(buf);
