@@ -1,20 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_get_next_line.c                                 :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 19:41:30 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/26 17:51:18 by stbaleba         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
+#include <stdio.h>
 
-int		ft_newline(char *cumul)
+int ft_newline(char *cumul)
 {
-	if (!cumul)
+	if(!cumul)
 		return (0);
 	while (*cumul)
 	{
@@ -24,99 +13,87 @@ int		ft_newline(char *cumul)
 	}
 	return (0);
 }
-
-char	*ft_line_read(char *cumul)
+char	*ft_strjoin(char *s1, char *s2, int read_file)
 {
-	char	*dest;
-	int		next_newline_found;
-	int		i;
+	char *dst;
+	int j;
+	size_t i;
 
-	next_newline_found = 0;
-	if (!(dest = ft_calloc(sizeof(char), ft_length_btn_nl(cumul))))
-		return (NULL);
 	i = 0;
-	while (*cumul && next_newline_found != 1)
-	{
-		if (*cumul != '\n')
+	if (!(dst = ft_calloc(sizeof(char), (ft_strlen(s1) + read_file + 1))))
+		return (NULL);
+	j = 0;
+	if(s1){
+		while (i < ft_strlen(s1))
 		{
-			dest[i] = *cumul;
+			dst[i] = s1[i];
 			i++;
 		}
-		else
-			next_newline_found++;
-		cumul++;
+		free(s1);
+		s1 = NULL;
 	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_strmcat(char *line, const char *buf, int read_file)
-{
-	char	*dest;
-	size_t	i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	if (!(dest = ft_calloc(sizeof(char), (ft_strlen(line) + read_file + 1))))
-		return (NULL);
-	while (i < ft_strlen(line))
-	{
-		dest[i] = line[i];
-		i++;
-	}
-	if (line)
-		free(line);
 	while (j < read_file)
 	{
-		dest[i + j] = buf[j];
+
+		dst[i + j] = s2[j];
 		j++;
 	}
-	dest[i + j] = '\0';
-	return (dest);
+	dst[i + j] = '\0';
+	return (dst);
 }
+
 
 int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
 {
-	if (read_file != 0)
-		*cumul = ft_strmcat(*cumul, *buf, read_file);
-	if (ft_newline(*cumul) == 1 || (read_file == 0 && (*cumul && **cumul)))
+	int x;
+	x = 0;
+	if ((x = ft_newline(*cumul)) == 1 ||
+		(read_file == 0 && (*cumul && **cumul)))
 	{
-		//if(buf && *buf)
-		//	free(*buf);
-		*line = ft_line_read(*cumul);
-		*cumul = ft_substr(*cumul, ft_length_btn_nl(*cumul), ft_strlen(*cumul));
-		if(read_file > 0)
+		if(buf && *buf)
+			free(*buf);
+		buf = NULL;
+		*line = ft_substr(*cumul, 0, ft_strlen(*cumul));
+		*cumul = ft_substr(*cumul, ft_strlen(*line) + 1, ft_strlen(*cumul));
+		if(x == 1)
 			return (1);
-		else
-			return(0);
+		else 
+			return (0);
 	}
 	return (0);
 }
 
-int		get_next_line(int fd, char **line)
+int get_next_line(int fd, char **line)
 {
-	static char	*cumul = NULL;
-	int			read_file;
-	char		*buf;
+	static char *cumul = NULL;
+	int read_file;
+	char *buf;
 
-	if (line && *line)
-		*line = NULL;
-	read_file = 1;
 	if (fd == -1 || !line ||
 	!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))))
 		return (-1);
-	while ((read_file > 0) || (read_file == 0 && (cumul && *cumul)))
+	read_file = 1;
+	while(read_file > 0 || (read_file == 0 && (cumul && *cumul)))
 	{
 		read_file = read(fd, buf, BUFFER_SIZE);
-		if(read_file == -1)
+		if (read_file == -1)
+		{
+			free(buf);
+			buf = NULL;
 			return (-1);
-		if (ft_check_gnl(&buf, &cumul, read_file, line) == 1)
+		}
+		if(read_file != 0)
+			cumul = ft_strjoin(cumul, buf, read_file);
+		if (ft_check_gnl(&buf, &cumul, read_file, line) == 1){
 			return (1);
+		}
 	}
+//	if(buf)
+//		free(buf);
+	buf = NULL;
 	if(*line == NULL)
 		*line = ft_calloc(1, sizeof(char));
-	if(cumul)
+	if(cumul && *cumul)
 		free(cumul);
 	cumul = NULL;
 	return (0);

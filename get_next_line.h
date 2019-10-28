@@ -6,7 +6,7 @@
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 19:29:52 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/25 13:05:57 by stbaleba         ###   ########.fr       */
+/*   Updated: 2019/10/28 00:59:05 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int		get_next_line(int fd, char **line);
 void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
-int		ft_length_btn_nl(char *cumul);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-
+char	*ft_substr(char *s, unsigned int start, size_t len);
+void	ft_bzero(void *s, size_t n);
+//char	*ft_strjoin(char *s1, char *s2, int read_file);
 #endif

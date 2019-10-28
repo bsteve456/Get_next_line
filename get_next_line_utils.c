@@ -1,84 +1,77 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_next_lines_utils.c                          :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/22 21:49:04 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/26 15:15:23 by stbaleba         ###   ########.fr       */
+/*   Created: 2019/10/27 16:31:10 by blacking          #+#    #+#             */
+/*   Updated: 2019/10/28 00:29:27 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+#include <stdio.h>
 void	*ft_calloc(size_t count, size_t size)
 {
-	size_t			i;
-	unsigned char	*data;
 
+	unsigned char *data;
+	if(!(data = (unsigned char *)malloc(size * count)))
+		return NULL;
+	ft_bzero((void *)data, size*count);
+	return data;
+}
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t i;
 	i = 0;
-	if (!(data = (unsigned char *)malloc(size * count)))
-		return (NULL);
-	while (i < size * count)
-	{
-		data[i] = '\0';
+	while (i < n) {
+		((unsigned char *)s)[i] = '\0';
 		i++;
 	}
-	return (data);
 }
 
-size_t	ft_strlen(const char *s)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
-	size_t count;
-
-	count = 0;
-	if (s == 0)
-		return (0);
-	while (s[count])
-		count++;
-	return (count);
-}
-
-int		ft_length_btn_nl(char *cumul)
-{
-	int	count;
-	int	next_newline_found;
-
-	count = 0;
-	next_newline_found = 0;
-	while (*cumul && next_newline_found != 1)
-	{
-		if (*cumul != '\n')
-			count++;
-		else
-			next_newline_found++;
-		cumul++;
-	}
-	return (count + 1);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	unsigned int	i;
-	size_t			j;
-	char			*dst;
+	unsigned int i;
+	size_t j;
+	char *dst;
 
 	i = 0;
 	j = 0;
-	if (!(dst = ft_calloc(len, sizeof(char))))
+	if(!(dst = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
-	while (s[i] && j < len)
+	while(s[i] && j < len)
 	{
-		if (i >= start && j < len)
+		if(start == 0 && s[i] == '\n')
+		{
+			dst[j] = '\0';
+			return(dst);
+		}
+		else if(i >= start && j < len)
 		{
 			dst[j] = s[i];
 			j++;
 		}
 		i++;
 	}
-	if(s)
-		free((void *)s);
+	if(start != 0)
+		free(s);
+//	s = NULL;
 	dst[j] = '\0';
 	return (dst);
 }
+
+
+size_t ft_strlen(const char *s) {
+	size_t count;
+
+	count = 0;
+	if(s == 0)
+		return 0;
+	while(s[count])
+		count++;
+	return count;
+}
+
