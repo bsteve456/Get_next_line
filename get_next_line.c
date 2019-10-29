@@ -6,7 +6,7 @@
 /*   By: stbaleba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:52:44 by stbaleba          #+#    #+#             */
-/*   Updated: 2019/10/29 11:52:31 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/29 12:47:32 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
 
 int check_params(int fd, char **line, char **buf, int buff_size)
 {
-	if (BUFFER_SIZE == 0 || fd == -1 || !line ||
+	if (BUFFER_SIZE == 0 || fd < 0 || !line ||
 	!(*buf = ft_calloc(sizeof(char), (buff_size + 1)))
 	|| !(*line = ft_calloc(1, sizeof(char))))
 		return (-1);
@@ -103,6 +103,7 @@ int		get_next_line(int fd, char **line)
 		{
 			free(buf);
 			free(cumul);
+			cumul = NULL;
 			return (-1);
 		}
 		if (read_file != 0)
