@@ -6,7 +6,7 @@
 /*   By: stbaleba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:52:44 by stbaleba          #+#    #+#             */
-/*   Updated: 2019/10/28 21:50:55 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/29 02:22:32 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
 
 	x = 0;
 	if ((x = ft_newline(*cumul)) == 1 ||
-		(read_file == 0 && (*cumul && **cumul)))
+			(read_file == 0 && (*cumul && **cumul)))
 	{
 		if (buf && *buf && x == 1)
 			free(*buf);
@@ -76,16 +76,24 @@ int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
 	return (0);
 }
 
+int check_params(int fd, char **line, char **buf, int buff_size)
+{
+	if (BUFFER_SIZE == 0 || fd == -1 || !line ||
+	!(*buf = ft_calloc(sizeof(char), (buff_size + 1)))
+	|| !(*line = ft_calloc(1, sizeof(char))))
+		return (-1);
+	return (1);
+
+}
+
 int		get_next_line(int fd, char **line)
 {
 	static char	*cumul = NULL;
 	int			read_file;
 	char		*buf;
 
-	if (BUFFER_SIZE == 0 || fd == -1 || !line ||
-	!(buf = ft_calloc(sizeof(char), (BUFFER_SIZE + 1))))
+	if(check_params(fd, line, &buf, BUFFER_SIZE) == -1)
 		return (-1);
-	*line = ft_calloc(1, sizeof(char));
 	read_file = 1;
 	while (read_file > 0 || (read_file == 0 && (cumul && *cumul)))
 	{
