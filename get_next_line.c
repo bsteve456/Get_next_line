@@ -6,7 +6,7 @@
 /*   By: stbaleba <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:52:44 by stbaleba          #+#    #+#             */
-/*   Updated: 2019/10/29 02:22:32 by blacking         ###   ########.fr       */
+/*   Updated: 2019/10/29 11:52:31 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,13 @@ int		get_next_line(int fd, char **line)
 		if ((read_file = read(fd, buf, BUFFER_SIZE)) == -1)
 		{
 			free(buf);
+			free(cumul);
 			return (-1);
 		}
 		if (read_file != 0)
 			cumul = ft_strjoin(cumul, buf, read_file);
 	}
-	if (cumul)
-		free(cumul);
+	free(cumul);
 	free(buf);
 	cumul = NULL;
 	return (0);
