@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/25 18:16:40 by blacking          #+#    #+#             */
-/*   Updated: 2019/11/25 19:34:44 by blacking         ###   ########.fr       */
+/*   Created: 2019/10/28 12:52:44 by stbaleba          #+#    #+#             */
+/*   Updated: 2019/12/22 15:17:04 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,29 @@ int		get_a_line(char **cumul, char **line, int read_file)
 	return (0);
 }
 
+<<<<<<< HEAD
+=======
+int		check_params(int fd, char **line, char **buf, int buff_size)
+{
+	if (BUFFER_SIZE == 0 || fd < 0 || !line ||
+	!(*buf = ft_calloc(sizeof(char), (buff_size + 1)))
+	|| !(*line = ft_calloc(1, sizeof(char))))
+		return (-1);
+	return (1);
+}
+
+>>>>>>> 1c50e5df0b927261f46482278777982fe6a29549
 int		get_next_line(int fd, char **line)
 {
 	char *buf;
 	static char *cumul = NULL;
 	int read_file;
 
+<<<<<<< HEAD
+=======
+	if (check_params(fd, line, &buf, BUFFER_SIZE) == -1)
+		return (-1);
+>>>>>>> 1c50e5df0b927261f46482278777982fe6a29549
 	read_file = 1;
 	if(!(buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char))))
 		return (-1);
