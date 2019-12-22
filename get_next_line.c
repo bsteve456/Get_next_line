@@ -3,114 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stbaleba <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/28 12:52:44 by stbaleba          #+#    #+#             */
-/*   Updated: 2019/10/29 12:47:32 by blacking         ###   ########.fr       */
+/*   Created: 2019/11/25 18:16:40 by blacking          #+#    #+#             */
+/*   Updated: 2019/11/25 19:34:44 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 int		ft_newline(char *cumul)
 {
-	if (!cumul)
-		return (0);
-	while (*cumul)
+	if(cumul == NULL)
+		return(0);
+	while(*cumul)
 	{
-		if (*cumul == '\n')
+		if(*cumul == '\n')
 			return (1);
 		cumul++;
 	}
 	return (0);
 }
 
-char	*ft_strjoin(char *s1, char *s2, int read_file)
+char *ft_strjoin(char *prev_cumul, char *buf, int read_file)
 {
-	char	*dst;
-	int		j;
-	size_t	i;
+	char *next_cumul;
+	int i = 0;
+	int j = 0;
 
-	i = 0;
-	if (!(dst = ft_calloc(sizeof(char), (ft_strlen(s1) + read_file + 1))))
+	if(!(next_cumul = ft_calloc(ft_strlen(prev_cumul) + read_file + 1, sizeof(char))))
 		return (NULL);
-	j = 0;
-	if (s1)
+	if(prev_cumul)
 	{
-		while (i < ft_strlen(s1))
+		while(prev_cumul[i])
 		{
-			dst[i] = s1[i];
+			next_cumul[i] = prev_cumul[i];
 			i++;
 		}
-		free(s1);
-		s1 = NULL;
+		free(prev_cumul);
 	}
-	while (j < read_file)
+	while(j < read_file)
 	{
-		dst[i + j] = s2[j];
+		next_cumul[i + j] = buf[j];
 		j++;
 	}
-	dst[i + j] = '\0';
-	return (dst);
+	return (next_cumul);
 }
 
-int		ft_check_gnl(char **buf, char **cumul, int read_file, char **line)
+int		get_a_line(char **cumul, char **line, int read_file)
 {
-	int	x;
-
-	x = 0;
-	if ((x = ft_newline(*cumul)) == 1 ||
-			(read_file == 0 && (*cumul && **cumul)))
+	int x =0;
+	if((x = ft_newline(*cumul)) == 1 || (read_file == 0 && (*cumul && **cumul)))
 	{
-		if (buf && *buf && x == 1)
-			free(*buf);
-		if (line && *line)
-			free(*line);
+		free(*line);
 		*line = ft_substr(*cumul, 0, ft_strlen(*cumul));
 		*cumul = ft_substr(*cumul, ft_strlen(*line) + 1, ft_strlen(*cumul));
-		if (x == 1)
+		if(x == 1)
 			return (1);
-		else
-			return (0);
+		return(0);
 	}
 	return (0);
 }
 
-int check_params(int fd, char **line, char **buf, int buff_size)
-{
-	if (BUFFER_SIZE == 0 || fd < 0 || !line ||
-	!(*buf = ft_calloc(sizeof(char), (buff_size + 1)))
-	|| !(*line = ft_calloc(1, sizeof(char))))
-		return (-1);
-	return (1);
-
-}
-
 int		get_next_line(int fd, char **line)
 {
-	static char	*cumul = NULL;
-	int			read_file;
-	char		*buf;
+	char *buf;
+	static char *cumul = NULL;
+	int read_file;
 
-	if(check_params(fd, line, &buf, BUFFER_SIZE) == -1)
-		return (-1);
 	read_file = 1;
-	while (read_file > 0 || (read_file == 0 && (cumul && *cumul)))
+	if(!(buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char))))
+		return (-1);
+	if(!(*line = ft_calloc(1, sizeof(char))))
+		return (-1);
+	while(read_file > 0 || (read_file == 0 && (cumul && *cumul)))
 	{
-		if (ft_check_gnl(&buf, &cumul, read_file, line) == 1)
+		if(get_a_line(&cumul, line, read_file) == 1)
+		{
+			free(buf);
 			return (1);
-		if ((read_file = read(fd, buf, BUFFER_SIZE)) == -1)
+		}
+		if((read_file = read(fd, buf, BUFFER_SIZE)) == -1)
 		{
 			free(buf);
 			free(cumul);
-			cumul = NULL;
 			return (-1);
 		}
-		if (read_file != 0)
+		if(read_file != 0)
 			cumul = ft_strjoin(cumul, buf, read_file);
 	}
-	free(cumul);
 	free(buf);
+	free(cumul);
 	cumul = NULL;
 	return (0);
 }

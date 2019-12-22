@@ -5,20 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 19:29:52 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/28 13:09:13 by stbaleba         ###   ########.fr       */
+/*   Created: 2019/11/25 18:15:14 by blacking          #+#    #+#             */
+/*   Updated: 2019/11/25 18:49:19 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# include <unistd.h>
+# define BUFFER_SIZE 4096
 # include <stdlib.h>
-
-int		get_next_line(int fd, char **line);
-void	*ft_calloc(size_t count, size_t size);
+# include <unistd.h>
+void	*ft_calloc(size_t nelem, size_t type);
 size_t	ft_strlen(const char *s);
-char	*ft_substr(char *s, unsigned int start, size_t len);
-void	ft_bzero(void *s, size_t n);
-
+char *ft_substr(char *prev_cumul, unsigned int start, size_t len);
 #endif

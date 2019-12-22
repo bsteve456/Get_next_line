@@ -5,70 +5,59 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: blacking <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/27 16:31:10 by blacking          #+#    #+#             */
-/*   Updated: 2019/10/28 21:19:08 by blacking         ###   ########.fr       */
+/*   Created: 2019/11/25 18:20:01 by blacking          #+#    #+#             */
+/*   Updated: 2019/11/25 18:59:38 by blacking         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_calloc(size_t count, size_t size)
+void	*ft_calloc(size_t nelem, size_t type)
 {
-	unsigned char	*data;
+	unsigned char *data;
+	size_t i;
 
-	if (!(data = (unsigned char *)malloc(size * count)))
+	i = 0;
+	if(!(data = (unsigned char *)malloc(nelem * type)))
 		return (NULL);
-	ft_bzero((void *)data, size * count);
+	while(i < nelem * type)
+	{
+		data[i] = '\0';
+		i++;
+	}
 	return (data);
 }
 
-void	ft_bzero(void *s, size_t n)
+char *ft_substr(char *prev_cumul, unsigned int start, size_t len)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)s)[i] = '\0';
-		i++;
-	}
-}
-
-char	*ft_substr(char *s, unsigned int start, size_t len)
-{
-	unsigned int	i;
-	size_t			j;
-	char			*dst;
-
-	i = 0;
-	j = 0;
-	if (!(dst = ft_calloc(len + 1, sizeof(char))))
+	char *line_or_cumul;
+	unsigned int i = 0;
+	unsigned int j = 0;
+	if(!(line_or_cumul = ft_calloc(len + 1, sizeof(char))))
 		return (NULL);
-	while (s[i] && j < len)
+	while(prev_cumul[i])
 	{
-		if (start == 0 && s[i] == '\n')
+		if(start == 0 && prev_cumul[i] == '\n')
+			return(line_or_cumul);
+		if(i >= start)
 		{
-			dst[j] = '\0';
-			return (dst);
+			line_or_cumul[j] = prev_cumul[i];
+			j++;
 		}
-		else if (i >= start && j < len)
-			dst[j++] = s[i];
 		i++;
 	}
-	if (start != 0)
-		free(s);
-	dst[j] = '\0';
-	return (dst);
+	if(start != 0)
+		free(prev_cumul);
+	return (line_or_cumul);
 }
 
 size_t	ft_strlen(const char *s)
 {
-	size_t	count;
+	size_t count = 0;
 
-	count = 0;
-	if (s == 0)
+	if(s == 0)
 		return (0);
-	while (s[count])
+	while(s[count])
 		count++;
 	return (count);
 }
